@@ -13,7 +13,7 @@ attendance takes to collect and ensure the legitimacy of the attendance.
 
 Venues mobile application will be downloaded onto their smart phones. When first opening the application, the student will
 enter their SIS credentials which will import their current academic schedule. When a student has class, the professor of
-the class will put an image on the board. At this point, the student will use the camera functionality of Venue and take
+the class will put an image on the board. At this point, the student will use the camera functionality of Venue phone application and take
 an image on the board. At this point, the students will have a unique identifier to the phone that it was taken on and if 
 duplicates were to be found, a notification would be set off.
 
