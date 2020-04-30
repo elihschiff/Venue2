@@ -144,6 +144,7 @@ sectionRoutes.get('/get_with_courses_for_student/:user_id', verifyToken, (req, r
       res.sendStatus(401).send("Unauthorized access")
     } else {
 
+      /*
       user_sections = []
       Section.find((error, sections) => {
         sections.forEach((section) => {
@@ -164,6 +165,69 @@ sectionRoutes.get('/get_with_courses_for_student/:user_id', verifyToken, (req, r
               res.json(user_sections)
           })
         })
+      })
+      */
+
+      // Find all sections such that the student is in the array, students, in the section.
+      // Then, find the courses that correspond to those sections
+      Section.find(
+        
+        // (1) Find the sections such that the student array of the section contains
+        //  the user id.
+        {students: { '$eq': user_id } }, (err, sections) => {
+
+        // Return error if mongo throws an error
+        if (err || sections == null) {
+          res.json({
+            success: false,
+            error: "Problem finding sections"
+          })
+        }
+
+        // Find the courses that associate with the sections
+        else {
+
+          let course_promises = []
+          let user_sections = []
+          sections.forEach(_section_ => {
+
+            // (2) For each section, query to find the course that is associated with
+            // the section
+            user_sections.push(_section_)
+            course_promises.push(new Promise((resolve, reject) => {
+
+              Course.findById(_section_.course, (course_error, section_course) => {
+                if (course_error || section_course == null) {
+                  resolve(null)
+                }
+                else {
+                  resolve(section_course)
+                }
+              })
+
+            }) )
+
+          })
+
+          // course_promises contains all the async course queries that we need to return.
+          // Wait for the async processes to complete then return
+          Promise.all(course_promises).then(_courses_ => {
+
+            // attach the course to the section data
+            _courses_.forEach((course_, i) => {
+
+              user_sections[i].course = course_
+            })
+
+            // filter out the null results (sections with courses that resolved null)
+            let final_sections = user_sections.filter(section_ => section_.course != null)
+
+            res.json(final_sections)
+
+          })
+
+        }
+
       })
 
     }
