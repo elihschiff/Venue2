@@ -77,8 +77,9 @@
           console.log(`Password changed ?`)
           console.log(response)
 
-          if (response) {
+          if (response.data) {
             this.success_message = "Successfully changed password!"
+            this.error_message = null
             setTimeout(() => { this.complete() }, 1500)
           }
           else {

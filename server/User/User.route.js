@@ -91,6 +91,7 @@ userRoutes.route('/change_password/').post((req, res) => {
     }
     else {
       bcrypt.compare(old_password, user.password, (err, result) => {
+        console.log(`Comparing passwords: ${old_password} == ${user.password} ? ${result}`)
         if (result) {
           // update the password
           bcrypt.hash(new_password, saltRounds, (err, hash) => {
