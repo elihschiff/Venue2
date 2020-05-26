@@ -16,15 +16,13 @@
           <a class="venue-nav-link" href="/dashboard">Dashboard</a>
         </div>
         <!-- Courses -->
-        <show-at breakpoint="mediumAndBelow">
-          <div v-if="this.$route.name === 'user_courses'" class="venue-nav-link-container">
-            <a class="venue-nav-link active-link" href="/user_courses">Courses</a>
-            <div class="active-link-underline"></div>
-          </div>
-          <div v-else class="venue-nav-link-container">
-            <a class="venue-nav-link" href="/user_courses">Courses</a>
-          </div>
-        </show-at>
+        <div v-if="this.$route.name === 'user_courses'" class="venue-nav-link-container">
+          <a class="venue-nav-link active-link" href="/user_courses">Courses</a>
+          <div class="active-link-underline"></div>
+        </div>
+        <div v-else class="venue-nav-link-container">
+          <a class="venue-nav-link" href="/user_courses">Courses</a>
+        </div>
         <!-- Attendance -->
         <!-- <hide-at breakpoint="small">
           <div v-if="this.$route.name === 'attendance'" class="venue-nav-link-container">
