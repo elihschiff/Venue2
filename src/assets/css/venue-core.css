@@ -631,24 +631,24 @@ a:hover {
 }
 
 .lecture-pill-min.green {
-  background-color: #4ECD4C;
-  box-shadow: 0px 3px 5px rgba(78, 205, 76, 0.3);
+  background-color: #24E565;
+  box-shadow: 0px 3px 10px rgba(65, 162, 91, 0.33);
 }
 .lecture-pill-min.blue {
   background-color: #4F6DEA;
   box-shadow: 0px 3px 5px rgba(79, 109, 234, 0.3);
 }
 .lecture-pill-min.yellow {
-  background-color: #F49F32;
-  box-shadow: 0px 3px 5px rgba(244, 159, 50, 0.4);
+  background-color: #E97E47;
+  box-shadow: 0px 3px 10px rgba(233, 126, 71, 0.36);
 }
 .lecture-pill-min.red {
   background-color: #F95247;
-  box-shadow: 0px 3px 5px rgba(249, 82, 71, 0.3);
+  box-shadow: 0px 3px 10px rgba(249, 82, 71, 0.3);
 }
 .lecture-pill-min.grey {
-  background-color: #c2c2c2;
-  box-shadow: 0px 3px 5px rgba(107, 107, 107, 0.1);
+  background-color: #cfcfcf;
+  box-shadow: 0px 3px 10px rgba(59, 59, 59, 0.15);
 }
 .lecture-pills-min-container .lecture-pill-holder {
   /* border: 1px solid black; */
@@ -721,7 +721,7 @@ a:hover {
   height: 65px;
   width: 340px;
   background-color: white;
-  box-shadow: 0px 3px 5px rgba(42, 141, 199, 0.35);
+  box-shadow: 0px 3px 10px rgba(42, 141, 199, 0.25);
   margin-right: 40px;
   margin-bottom: 25px;
 }
