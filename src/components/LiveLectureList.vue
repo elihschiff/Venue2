@@ -14,7 +14,7 @@
           :courseDept="lecture.sections[0].course.dept"
           :courseNumber="lecture.sections[0].course.course_number"
           :eventLabel="lecture.title"
-          status="ongoing"
+          :status="getLectureStatus(lecture)"
           :timeFromNow="lecture.end_time"
          />
       </router-link>
@@ -48,6 +48,30 @@
 
     },
     methods: {
+      getLectureStatus (lecture) {
+        // pending, ongoing, or ended
+        // if current time < submission_start_time, then return pending
+        // else if current time > submission_start_time and current time < submission_end_time,
+        //  return ongoing
+        // otherwise, return ended
+
+        let current_time = new Date ()
+        let start = new Date (lecture.hasOwnProperty('submission_start_time') ? lecture.submission_start_time : null)
+        let end = new Date (lecture.hasOwnProperty('submission_end_time') ? lecture.submission_end_time : null)
+
+        // console.log(`lecture name: ${lecture.title}`)
+        // console.log(`isNaN ? ${isNaN(+current_time) || isNaN(+start) || isNaN(+end)}`)
+        // console.log(`isPending ? ${current_time < start}`)
+        // console.log(current_time)
+        // console.log(start)
+        // console.log(`isOngoing ? ${current_time >= start && current_time < end}`)
+
+        if (isNaN(+current_time) || isNaN(+start) || isNaN(+end)) return 'ended'
+        if (current_time < start) return 'pending'
+        else if (current_time >= start && current_time < end) return 'ongoing'
+        return 'ended'
+
+      },
       getTimeUntil (time_string) {
         return moment(time_string).fromNow()
       },
