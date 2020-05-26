@@ -11,7 +11,7 @@
 
       <!-- Time Block -->
       <div class="course-time-block inline-block" v-if="course.hasOwnProperty('name')">3:00pm-4:50pm</div>
-      <div v-if="course.hasOwnProperty('name') && section_number != -1">Section {{ section_number }}</div>
+      <div v-if="course.hasOwnProperty('name') && section_number != undefined && section_number != -1">Section {{ section_number }}</div>
 
     </div>
 

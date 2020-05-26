@@ -26,10 +26,11 @@
           <div class="left">
             <div v-on:click="subview_section_id = 0" :class="'tab ' + (subview_section_id == 0 ? 'active' : '')">Attendance History</div>
             <div v-on:click="subview_section_id = 2" :class="'tab ' + (subview_section_id == 2 ? 'active' : '')">Upcoming</div>
+            <div v-if="data_to_show" v-on:click="subview_section_id = 3" :class="'tab ' + (subview_section_id == 3 ? 'active' : '')">Past Lectures</div>
             <div v-if="data_to_show" v-on:click="subview_section_id = 1" :class="'tab ' + (subview_section_id == 1 ? 'active' : '')">Statistics</div>
           </div>
           <div v-if="this.current_user.is_instructor" class="right">
-            <select v-model="selected_section">
+            <select v-model="selected_section" class="venue-select">
               <option v-for="section_ in section_arr" :value="section_[1]">Section {{ section_[0] }}</option>
               <option :value="null" selected>All Sections</option>
             </select>
@@ -71,15 +72,20 @@
         <CourseInfoTitle :course="course" class="inline-block" mobileMode />
         <div class="course-info-sub-tab mobile">
           <div class="left">
-            <div class="tab active">Attendance History</div>
+            <select class="venue-select" v-on:change="changeMobileSections">
+              <option value="attendance_history" :selected="subview_section_id == 0">Attendance Histroy</option>
+              <option value="upcoming" :selected="subview_section_id == 2">Upcoming</option>
+              <option value="past_lectures" :selected="subview_section_id == 3">Past Lectures</option>
+              <option value="statistics" :selected="subview_section_id == 1">Statistics</option>
+            </select>
           </div>
           <div class="right"  v-if="this.current_user.is_instructor">
-            <select v-model="selected_section">
+            <select v-model="selected_section" class="venue-select">
               <option v-for="section_ in section_arr" :value="section_[1]">Section {{ section_[0] }}</option>
               <option :value="null" selected>All Sections</option>
             </select>
           </div>
-          <div>
+          <div v-if="subview_section_id == 0">
             <InstructorAttendanceHistory
               :informSections="this.informSections"
               :course_id="course_id"
@@ -89,6 +95,19 @@
               v-if="this.current_user.is_instructor"
               mobileMode />
               <StudentAttendanceHistory :section_id="section_id" :showData="showData" mobileMode v-else />
+          </div>
+          <div v-else-if="subview_section_id == 1" :style="{marginTop: `20px`}">
+            <SectionAttendanceGraph v-if="this.current_user.is_instructor && selected_section != null" :section_id="selected_section" />
+            <SectionAttendanceGraph v-else-if="this.current_user.is_instructor && selected_section == null" :section_id="null" />
+
+            <StudentAttendanceGraph v-else
+              :student_id="this.current_user._id"
+              :section_id="section_id"
+            />
+          </div>
+          <div v-else-if="subview_section_id == 2" :style="{marginTop: '20px'}">
+            <show-at breakpoint="mediumAndAbove"><UpcomingLecturesList :selected_section="selected_section" :section_id="section_id" /></show-at>
+            <hide-at breakpoint="mediumAndAbove"><UpcomingLecturesList :selected_section="selected_section" :section_id="section_id" mobileMode/></hide-at>
           </div>
         </div>
       </div>
@@ -196,6 +215,15 @@ export default {
     }
   },
   methods: {
+    changeMobileSections (e) {
+      console.log(`Section changed!`)
+      console.log(e.target.value)
+
+      if (e.target.value == "attendance_history") {this.subview_section_id = 0;}
+      else if (e.target.value == "upcoming") {this.subview_section_id = 2;}
+      else if (e.target.value == "statistics") {this.subview_section_id = 1;}
+      else if (e.target.value == "past_lectures") {this.subview_section_id = 3;}
+    },
     getAllSections () {
       SectionAPI.getSectionsForCourse(this.course_id)
       .catch(err => { console.log(`Problem getting sections for course ${this.course_id}`); console.log(err);})
